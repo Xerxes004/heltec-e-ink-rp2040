@@ -171,12 +171,20 @@ class Display(IEPaperDisplay):
         cols_b = self.height_px
         resolution = int(rows_b * cols_b / 8)
         bw_buffer = bytearray([0x00] * 4000)
-        # r_buffer = bytearray([0x00] * rows_b * cols_b)
+        r_buffer = bytearray([0x0F] * 4000)
 
-        print(f"Buffer length: {len(bw_buffer)}")
-
-        for i in range(0, l):
-            bw_buffer[i] = 0xFF
+        for r in range(250):
+            for c in range(16):
+                offset = r * 16 + c
+                # print(offset)
+                if (c == 0 or c % 2 == 0) or (r == 0 or r % 16 < 4):
+                    bw_buffer[offset] = 0xFF
+                else:
+                    bw_buffer[offset] = 0x00
+        #
+        #
+        # for i in range(0, l):
+        #     bw_buffer[i] = 0xFF
 
         # for i in range(400, 800):
         #     bw_buffer[i] = 0xFF >> 2
@@ -214,7 +222,7 @@ class Display(IEPaperDisplay):
         #         square_color = black
 
         self.set_pixels(PixelType.BLACK_WHITE, bw_buffer)
-        # self.set_pixels(PixelType.RED, r_buffer)
+        self.set_pixels(PixelType.RED, r_buffer)
         self.refresh_display()
         self.wait_until_ready()
 
