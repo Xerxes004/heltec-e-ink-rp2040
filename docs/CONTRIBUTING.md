@@ -12,6 +12,7 @@ for writing scripts, but not for working with low-level interfaces. Here there b
 3. Use dependency-injection for interfaces; don't arbitrarily assign pins for users
 4. Don't use global variables
 5. Use type hints for all function parameters, return values, and variables
+6. Write unit tests for resolution & supported pixels
 
 ## Requirements for Adding Display Support
 

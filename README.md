@@ -19,6 +19,7 @@ resolution display, but I got the 250x122 one instead. I think the 212x104 versi
 * [X] Port HeltecAutomation code directly from C/CPP to Python, changing almost nothing
 * [ ] Refactor to simplify interfaces & use interrupts instead of polling
 * [ ] Add more screens
+* [ ] Add package to PyPi
 
 ## Contributing
 
