@@ -19,14 +19,13 @@ print("Initializing display...")
 display.initialize_display()
 print("\bDONE")
 
-# print("Displaying test pattern...")
-# display.display_test_pattern()
-# print("\bDONE")
+
+print("Displaying test pattern...")
 
 canvas = EInkCanvas(display)
 canvas.clear()
-canvas.draw_to_screen()
-
+display.draw_test_pattern(canvas)
+canvas.flush_to_display()
 display.refresh_display()
 
 print("Program complete")
