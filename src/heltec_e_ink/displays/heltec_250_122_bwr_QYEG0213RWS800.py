@@ -74,11 +74,11 @@ class Display(IEPaperDisplay):
 
     @property
     def width_px(self) -> int:
-        return 250
+        return 122
 
     @property
     def height_px(self) -> int:
-        return 122
+        return 250
 
     @property
     def display_ready(self) -> bool:
