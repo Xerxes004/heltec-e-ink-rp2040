@@ -1,6 +1,8 @@
 from micropython import const
 from machine import SPI
 
+from .._drawing import EInkCanvas
+
 import time
 
 from .. import PixelType
@@ -166,7 +168,7 @@ class Display(IEPaperDisplay):
         pixel_cmd = self._pixel_type_cmd[pixel_flags]
         self.write(pixel_cmd, img_bytes)
 
-    def display_test_pattern(self, l=3000):
+    def draw_test_pattern(self, canvas: EInkCanvas) -> {PixelType: bytearray}:
         rows_b = self.width_px + 1
         cols_b = self.height_px
         resolution = int(rows_b * cols_b / 8)
@@ -221,10 +223,8 @@ class Display(IEPaperDisplay):
         #     if square_color is red:
         #         square_color = black
 
-        self.set_pixels(PixelType.BLACK_WHITE, bw_buffer)
-        self.set_pixels(PixelType.RED, r_buffer)
-        self.refresh_display()
-        self.wait_until_ready()
+        canvas.draw_buffer(PixelType.BLACK_WHITE, bw_buffer)
+        canvas.draw_buffer(PixelType.RED, r_buffer)
 
     def write(self, command: int, data: [int] = None) -> int:
         if data is None:
