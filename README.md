@@ -17,9 +17,9 @@ resolution display, but I got the 250x122 one instead. I think the 212x104 versi
 ## Roadmap
 
 * [X] Port HeltecAutomation code directly from C/CPP to Python, changing almost nothing
-* [ ] Refactor to simplify interfaces & use interrupts instead of polling
-* [ ] Add more screens
+* [X] Refactor to simplify interfaces & use interrupts instead of polling
 * [ ] Add package to PyPi
+* [ ] Add more screens
 
 ## Contributing
 
