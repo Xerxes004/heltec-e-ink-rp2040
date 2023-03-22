@@ -23,7 +23,8 @@ resolution display, but I got the 250x122 one instead. I think the 212x104 versi
 
 ## Contributing
 
-Please feel free to make pull requests for new screen support and bug fixes!
+Please feel free to make pull requests for new screen support and bug fixes! Since this project is still in its infancy,
+pull requests may be delayed until I finalize the interfaces (especially the drawing library).
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for requirements.
 
