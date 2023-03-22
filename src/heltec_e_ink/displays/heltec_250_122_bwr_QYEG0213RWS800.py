@@ -23,7 +23,6 @@ class SerialInterface(ISerialDisplayInterface):
         self.select_chip = True
         self.command_mode = True
         spi.write(command_byte)
-        self.select_chip = False
 
         self.data_mode = buffer_len > 1
         data = buffer[1:]
@@ -31,7 +30,8 @@ class SerialInterface(ISerialDisplayInterface):
         for i, b in enumerate(data):
             self.select_chip = True
             spi.write(bytearray([b]))
-            self.select_chip = False
+
+        self.select_chip = False
 
         return buffer_len
 
