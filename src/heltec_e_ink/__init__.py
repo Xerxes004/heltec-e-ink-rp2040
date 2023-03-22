@@ -1,5 +1,6 @@
 from ._display_interface import IEPaperDisplay, PixelType
 from ._serial_interface import SerialInitInfo
+from ._drawing import EInkCanvas, Rotation
 
 
 class Displays:

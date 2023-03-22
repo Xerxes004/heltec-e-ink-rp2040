@@ -1,3 +1,5 @@
+from _drawing import EInkCanvas
+
 class PixelType:
     BLACK_WHITE = 0
     RED = 1
