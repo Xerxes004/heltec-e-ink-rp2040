@@ -1,4 +1,4 @@
-from _display_interface import IEPaperDisplay, PixelType
+from ._display_interface import IEPaperDisplay, PixelType
 
 
 class Rotation:
@@ -13,6 +13,7 @@ class EInkCanvas:
         self._display = display
         self._rotation = rotation
         self._buffers = {}
+
         for pixel_type in display.supported_pixel_types:
             self._buffers[pixel_type] = [0x00] * self._get_bytes_needed(self.width_px) * self.height_px
 
@@ -38,7 +39,15 @@ class EInkCanvas:
     def rotation(self):
         return self._rotation
 
-    def draw_to_screen(self):
+    def draw_buffer(self, color: PixelType, buffer: bytearray):
+        buf = self._buffers[color]
+        if len(buffer) != len(buf):
+            raise Exception(f"Can't draw buffer of size {len(buffer)} to one of size {len(buf)}")
+
+        for i, v in enumerate(buffer):
+            buf[i] = v
+
+    def flush_to_display(self):
         for p in self._display.supported_pixel_types:
             self._display.set_pixels(p, bytearray(self._buffers[p]))
 
@@ -49,7 +58,7 @@ class EInkCanvas:
         for c in color_types:
             buf = self._buffers[c]
             for i in range(len(buf)):
-                buf[i] = 0x00
+                buf[i] = 0xFF if c is PixelType.BLACK_WHITE else 0x00
 
     def _draw_pixel_absolute(self, x: int, y: int, color: PixelType):
         if x < 0 or x >= self.width_px or y < 0 or y >= self.height_px \
