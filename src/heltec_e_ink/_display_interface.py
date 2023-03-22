@@ -1,5 +1,3 @@
-from _drawing import EInkCanvas
-
 class PixelType:
     BLACK_WHITE = 0
     RED = 1
@@ -53,7 +51,7 @@ class IEPaperDisplay:
         Initialize the display directly after applying power
         """
 
-    def display_test_pattern(self, *args, **kwargs):
+    def draw_test_pattern(self, *args, **kwargs):
         """
         Display a test pattern on the screen to see if everything is working
         """
