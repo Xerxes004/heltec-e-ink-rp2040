@@ -1,3 +1,4 @@
+from math import sqrt
 from ._display_interface import IEPaperDisplay, PixelType
 
 
@@ -15,7 +16,7 @@ class EInkCanvas:
         self._buffers = {}
 
         for pixel_type in display.supported_pixel_types:
-            self._buffers[pixel_type] = [0x00] * self._get_bytes_needed(self.width_px) * self.height_px
+            self._buffers[pixel_type] = bytearray([0x00] * self._display.width_bytes * self.height_px)
 
     def __del__(self):
         del self._buffers
@@ -41,7 +42,7 @@ class EInkCanvas:
 
     def draw_buffer(self, color: PixelType, buffer: bytearray):
         buf = self._buffers[color]
-        if len(buffer) != len(buf):
+        if len(buffer) > len(buf):
             raise Exception(f"Can't draw buffer of size {len(buffer)} to one of size {len(buf)}")
 
         for i, v in enumerate(buffer):
@@ -60,21 +61,30 @@ class EInkCanvas:
             for i in range(len(buf)):
                 buf[i] = 0xFF if c is PixelType.BLACK_WHITE else 0x00
 
-    def _draw_pixel_absolute(self, x: int, y: int, color: PixelType):
-        if x < 0 or x >= self.width_px or y < 0 or y >= self.height_px \
-                or color not in self._display.supported_pixel_types:
+    def draw_pixel(self, x: int, y: int, color: PixelType):
+        if self.rotation is Rotation.ROTATE_0:
+            pass
+        elif self.rotation is Rotation.ROTATE_90:
+            (x, y) = (self.width_px - y, x)
+        elif self.rotation is Rotation.ROTATE_180:
+            (x, y) = (self.width_px - x, self.height_px - y)
+        elif self.rotation is Rotation.ROTATE_270:
+            (x, y) = (y, self.height_px - x)
+
+        self._display.draw_pixel_absolute(self._buffers[color], x, y, color)
+
+    def draw_line(self, p1: (int, int), p2: (int, int), color: PixelType):
+        (x1, y1) = p1
+        (x2, y2) = p2
+        ld = round(sqrt((x2 - x1)**2 + (y2 - y1)**2))
+        if ld is 0:
             return
+        dx = (x2 - x1) / ld
+        dy = (y2 - y1) / ld
+        x = x1
+        y = y1
 
-        self._buffers[color][y * self.width_px + x] |= 0x80 >> (x % 8)
-
-    @staticmethod
-    def _get_bytes_needed(num_px: int) -> int:
-        """
-        If width isn't divisible by 8, we have to pad one extra byte to hold the data.
-        :param num_px:
-        :return:
-        """
-        if num_px % 8 == 0:
-            return int(num_px / 8)
-        else:
-            return int(num_px / 8) + 1
+        for p in range(round(ld) + 1):
+            self.draw_pixel(round(x), round(y), color)
+            x += dx
+            y += dy
