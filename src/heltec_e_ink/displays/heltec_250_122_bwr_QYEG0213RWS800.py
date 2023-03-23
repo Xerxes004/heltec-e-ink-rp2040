@@ -79,6 +79,13 @@ class Display(IEPaperDisplay):
         return 122
 
     @property
+    def width_bytes(self) -> int:
+        if self.width_px % 8 == 0:
+            return int(self.width_px / 8)
+        else:
+            return int(self.width_px / 8) + 1
+
+    @property
     def height_px(self) -> int:
         return 250
 

@@ -31,6 +31,12 @@ class IEPaperDisplay:
         """
 
     @property
+    def width_bytes(self) -> int:
+        """
+        Width of the screen in bytes
+        """
+
+    @property
     def height_px(self) -> int:
         """
         The display height in px
