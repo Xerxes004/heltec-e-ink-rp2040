@@ -175,6 +175,17 @@ class Display(IEPaperDisplay):
         pixel_cmd = self._pixel_type_cmd[pixel_flags]
         self.write(pixel_cmd, img_bytes)
 
+    def draw_pixel_absolute(self, buffer: bytearray, x: int, y: int, color: PixelType):
+        if x < 0 or x >= self.width_px or y < 0 or y >= self.height_px \
+                or color not in self.supported_pixel_types:
+            return
+        index = y * self.width_bytes + int(x / 8)
+
+        if color is PixelType.BLACK_WHITE:
+            buffer[index] &= ~(0b1000_0000 >> (x % 8))
+        elif color is PixelType.RED:
+            buffer[index] |= 0b1000_0000 >> (x % 8)
+
     def draw_test_pattern(self, canvas: EInkCanvas) -> {PixelType: bytearray}:
         rows_b = self.width_px + 1
         cols_b = self.height_px

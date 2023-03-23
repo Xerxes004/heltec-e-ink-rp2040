@@ -57,6 +57,11 @@ class IEPaperDisplay:
         Initialize the display directly after applying power
         """
 
+    def draw_pixel_absolute(self, buffer: bytearray, x: int, y: int, color: PixelType):
+        """
+        Draw a pixel at the absolute coordinate. The coordinate system is Cartesian; the bottom left pixel is (0,0).
+        """
+
     def draw_test_pattern(self, *args, **kwargs):
         """
         Display a test pattern on the screen to see if everything is working
