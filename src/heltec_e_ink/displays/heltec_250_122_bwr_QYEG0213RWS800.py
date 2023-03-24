@@ -161,7 +161,7 @@ class Display(IEPaperDisplay):
     def exit_deep_sleep(self) -> None:
         self.write(Cmd.DEEP_SLEEP, [0x00])
 
-    def refresh_display(self) -> None:
+    def refresh(self) -> None:
         self.write(Cmd.DISPLAY_UPDATE_CONTROL_2, [0xF7])
         self.write(Cmd.MASTER_ACTIVATION)
 

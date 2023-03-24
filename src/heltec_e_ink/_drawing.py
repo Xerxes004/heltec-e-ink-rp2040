@@ -48,7 +48,7 @@ class EInkCanvas:
         for i, v in enumerate(buffer):
             buf[i] = v
 
-    def flush_to_display(self):
+    def flush(self):
         for p in self._display.supported_pixel_types:
             self._display.set_pixels(p, bytearray(self._buffers[p]))
 
@@ -89,7 +89,7 @@ class EInkCanvas:
             x += dx
             y += dy
 
-    def draw_circle(self, c: (int, int), r: int, color: PixelType):
+    def draw_circle(self, c: (int, int), r: int, color: PixelType, filled: bool = False):
         if r <= 0:
             return
         (x, y) = c
@@ -105,6 +105,15 @@ class EInkCanvas:
             self.draw_pixel(x + x_pos, y + y_pos, color)
             self.draw_pixel(x + x_pos, y - y_pos, color)
             self.draw_pixel(x - x_pos, y - y_pos, color)
+
+            if filled:
+                s1 = (x + x_pos, y + y_pos)
+                e1 = (s1[0] + (2 * (-x_pos) + 1), s1[1])
+                s2 = (x + x_pos, y - y_pos)
+                e2 = (s2[0] + (2 * (-x_pos) + 1), s2[1])
+                self.draw_line(s1, e1, color)
+                self.draw_line(s2, e2, color)
+
             e2 = err
             if e2 <= y_pos:
                 y_pos += 1
@@ -114,3 +123,21 @@ class EInkCanvas:
             if e2 > x_pos:
                 x_pos += 1
                 err += x_pos * 2 + 1
+
+    def draw_rectangle(self, p1: (int, int), p2: (int, int), color: PixelType, filled: bool = False):
+        bottom_left = p1
+        bottom_right = (p1[0], p2[1])
+        top_left = (p2[0], p1[1])
+        top_right = p2
+
+        self.draw_line(bottom_left, bottom_right, color)
+        self.draw_line(bottom_left, top_left, color)
+        self.draw_line(top_left, top_right, color)
+        self.draw_line(top_right, bottom_right, color)
+
+        if filled:
+            s = (top_left[0], top_left[1] - 1)
+            e = (top_right[0], s[1])
+            for i in range(round(top_left[1] - bottom_left[1] - 2)):
+                self.draw_line(s, e, color)
+                s = (s[0], s[1] - 1)

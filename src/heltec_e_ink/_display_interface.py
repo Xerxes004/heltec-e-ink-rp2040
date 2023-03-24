@@ -75,7 +75,7 @@ class IEPaperDisplay:
         :param start_byte: Start location in memory to begin writing the data
         """
 
-    def refresh_display(self) -> None:
+    def refresh(self) -> None:
         """
         Display the current LUT buffers on the screen
         """
