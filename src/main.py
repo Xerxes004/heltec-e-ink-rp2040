@@ -25,15 +25,10 @@ print("Displaying test pattern...")
 canvas = EInkCanvas(display)
 canvas.clear()
 # display.draw_test_pattern(canvas)
-for x in range(8):
-    for y in range(3):
-        canvas.draw_pixel(x * 8, y, PixelType.BLACK_WHITE)
-        canvas.draw_pixel(x * 8 + 7, y, PixelType.RED)
-canvas.draw_line((4, 1), (4, 4), PixelType.BLACK_WHITE)
-canvas.draw_line((10, 10), (25, 25), PixelType.BLACK_WHITE)
-canvas.draw_line((10, 25), (25, 10), PixelType.BLACK_WHITE)
-canvas.draw_buffer(PixelType.BLACK_WHITE, bytearray([0x00]))
-canvas.draw_buffer(PixelType.RED, bytearray([0x00, 0xFF]))
+
+canvas.draw_line((0, 0), (121, 249), PixelType.BLACK_WHITE)
+canvas.draw_line((0, 249), (121, 0), PixelType.BLACK_WHITE)
+
 canvas.flush_to_display()
 display.refresh_display()
 

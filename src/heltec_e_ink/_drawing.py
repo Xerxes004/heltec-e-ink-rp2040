@@ -88,3 +88,29 @@ class EInkCanvas:
             self.draw_pixel(round(x), round(y), color)
             x += dx
             y += dy
+
+    def draw_circle(self, c: (int, int), r: int, color: PixelType):
+        if r <= 0:
+            return
+        (x, y) = c
+
+        # Bresenham algorithm
+
+        x_pos = -r
+        y_pos = 0
+        err = 2 - 2 * r
+
+        while x_pos <= 0:
+            self.draw_pixel(x - x_pos, y + y_pos, color)
+            self.draw_pixel(x + x_pos, y + y_pos, color)
+            self.draw_pixel(x + x_pos, y - y_pos, color)
+            self.draw_pixel(x - x_pos, y - y_pos, color)
+            e2 = err
+            if e2 <= y_pos:
+                y_pos += 1
+                err += y_pos * 2 + 1
+                if -x_pos == y_pos and e2 <= x_pos:
+                    e2 = 0
+            if e2 > x_pos:
+                x_pos += 1
+                err += x_pos * 2 + 1
