@@ -124,20 +124,28 @@ class EInkCanvas:
                 x_pos += 1
                 err += x_pos * 2 + 1
 
-    def draw_rectangle(self, p1: (int, int), p2: (int, int), color: PixelType, filled: bool = False):
-        bottom_left = p1
-        bottom_right = (p1[0], p2[1])
-        top_left = (p2[0], p1[1])
-        top_right = p2
+    def draw_rectangle(self, top_left: (int, int), bottom_right: (int, int), color: PixelType, filled: bool = False):
+        bottom_left = (top_left[0], bottom_right[1])
+        top_right = (bottom_right[0], top_left[1])
 
         self.draw_line(bottom_left, bottom_right, color)
         self.draw_line(bottom_left, top_left, color)
         self.draw_line(top_left, top_right, color)
         self.draw_line(top_right, bottom_right, color)
 
+        print(f"filled={filled}")
         if filled:
-            s = (top_left[0], top_left[1] - 1)
-            e = (top_right[0], s[1])
-            for i in range(round(top_left[1] - bottom_left[1] - 2)):
+            s = top_left
+            e = top_right
+            print(f"1: s={s}  e={e}")
+            yd = top_left[1] - bottom_left[1]
+            print(f"tl: {top_left}")
+            print(f"tr: {top_right}")
+            print(f"bl: {bottom_left}")
+            print(f"br: {bottom_right}")
+            print(f"yd={yd}")
+            for i in range(round(yd)):
                 self.draw_line(s, e, color)
                 s = (s[0], s[1] - 1)
+                e = (e[0], e[1] - 1)
+                print(f"s={s}  e={e}")
